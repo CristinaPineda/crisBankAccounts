@@ -22,9 +22,16 @@ const operation = () => {
   ])
   .then((answer) => {
     const action = answer['action'];
-    console.log(action);
+    if(action === 'Criar conta') {
+      createAccount();
+    }
   })
   .catch(err => console.error(err))
 };
+
+const createAccount = () => {
+  console.log(chalk.bgBlue.white("Obrigado por escolher nosso banco"));
+  console.log(chalk.blue('A seguir vamos configurar sua conta de acordo com o seu perfil.'))
+}
 
 operation();
