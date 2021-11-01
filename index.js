@@ -106,6 +106,18 @@ const deposit = () => {
     if (!checkAccount(accountName)) {
       return deposit();
     }
+
+    inquirer.prompt([
+      {
+        name: 'amount',
+        message: 'Quanto você deseja depositar?'
+      }
+    ]).then((answer) => {
+      const amount = answer['amount']
+      
+      operation();
+    })
+    .catch((err) => console.error(err))
   })
   .catch((err) => console.log(err));
 }
@@ -117,6 +129,16 @@ const checkAccount = (accountName) => {
     return false;
   }
   return true;
+}
+
+// função adiciona valor a conta
+const addAmount = (accountName, amount) => {
+
+}
+
+const getAccount = (accountName) => {
+  const accountJSON =  fs.readFileSync(`accounts/${accountName}.json`, {encoding: 'utf8', flag: 'r'});
+  return JSON.parse(accountJSON)
 }
 
 operation();
