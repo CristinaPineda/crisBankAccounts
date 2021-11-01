@@ -25,9 +25,10 @@ const operation = () => {
       const action = answer["action"];
       if (action === "Criar conta") {
         createAccount();
-      } else if (action === "Consultar Saldo") {
       } else if (action === "Depositar") {
         deposit();
+      } else if (action === "Consultar Saldo") {
+        getAccountBalance();
       } else if (action === "Sacar") {
       } else if (action === "Sair") {
         console.log(chalk.bgBlueBright.white("Obrigada por usar o CrisBank"));
@@ -90,6 +91,28 @@ const buildAccount = () => {
     .catch((err) => console.log(err));
 };
 
+// saldo de conta
+const getAccountBalance = () => {
+  inquirer.prompt([
+    {
+      name: 'accountName',
+      message: 'Qual o nome da sua conta?'
+    }
+  ])
+  .then((answer) => {
+    const accountName = answer['accountName']
+
+    if(!checkAccount(accountName)) {
+      return getAccountBalance()
+    }
+
+    const accountData = getAccount(accountName);
+    console.log(chalk.bgBlue.white(`Olá, o saldo da conta ${accountName} é : R$${accountData.balance}`))
+    operation();
+  })
+  .catch((err) => console.log(err) )
+}
+
 // função de depositar
 const deposit = () => {
   inquirer
@@ -124,7 +147,7 @@ const deposit = () => {
     .catch((err) => console.log(err));
 };
 
-// função check se conta existe]
+// função check se conta existe
 const checkAccount = (accountName) => {
   if (!fs.existsSync(`accounts/${accountName}.json`)) {
     console.log(
