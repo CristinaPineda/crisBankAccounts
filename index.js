@@ -54,9 +54,18 @@ const buildAccount = () => {
     if (fs.existsSync(`accounts/${accountName}.json`)) {
       console.log(chalk.bgRed.black('Essa conta já existe, escolha outro nome.'),
       )
+      buildAccount();
+      return
     }
+
+    fs.writeFileSync(`accounts/${accountName}.json`, "{'balance': 0}", (err) => {
+      console.log(err);
+    })
+
+    console.log(chalk.green('Parabéns sua conta foi criada!'))
+    operation();
   })
-  .catch((error) => console.log(error));
+  .catch((err) => console.log(err));
 }
 
 operation();
