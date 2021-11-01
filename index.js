@@ -11,7 +11,7 @@ const operation = () => {
       {
         type: "list",
         name: "action",
-        message: "O que você gostaria de fazer?",
+        message: "******CRISBANK****** \nO que você gostaria de fazer?",
         choices: [
           "Criar conta",
           "Consultar saldo",
@@ -32,7 +32,8 @@ const operation = () => {
       } else if (action === "Sacar") {
 
       } else if (action === "Sair") {
-
+        console.log(chalk.bgBlueBright.white("Obrigada por usar o CrisBank"));
+        process.exit();
       }
     })
     .catch((err) => console.error(err));
