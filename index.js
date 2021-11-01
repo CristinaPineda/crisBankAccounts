@@ -140,7 +140,7 @@ const addAmount = (accountName, amount) => {
   const account = getAccount(accountName);
 
   if (!amount) {
-    console.log("Ocorreu um erro, tente novamente");
+    console.log(chalk.bgRed.black("Ocorreu um erro, tente novamente!"));
     return deposit();
   }
   console.log(account);
