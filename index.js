@@ -78,7 +78,7 @@ const buildAccount = () => {
 
       fs.writeFileSync(
         `accounts/${accountName}.json`,
-        "{'balance': 0}",
+        '{"balance": 0}',
         (err) => {
           console.log(err);
         }
@@ -137,13 +137,17 @@ const checkAccount = (accountName) => {
 
 // função adiciona valor a conta
 const addAmount = (accountName, amount) => {
-  const account = getAccount(accountName);
+  const accountData = getAccount(accountName);
 
   if (!amount) {
     console.log(chalk.bgRed.black("Ocorreu um erro, tente novamente!"));
     return deposit();
   }
-  console.log(account);
+  accountData.balance = parseFloat(amount) + parseFloat(accountData.balance);
+
+  fs.writeFileSync(`accounts/${accountName}.json`, JSON.stringify(accountData), (err) => { console.log(err) });
+
+  console.log(chalk.green(`Foi depositado o valor de R$${amount} na conta: ${accountName}.`))
 };
 
 const getAccount = (accountName) => {
