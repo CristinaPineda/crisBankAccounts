@@ -26,11 +26,9 @@ const operation = () => {
       if (action === "Criar conta") {
         createAccount();
       } else if (action === "Consultar Saldo") {
-
       } else if (action === "Depositar") {
         deposit();
       } else if (action === "Sacar") {
-
       } else if (action === "Sair") {
         console.log(chalk.bgBlueBright.white("Obrigada por usar o CrisBank"));
         process.exit();
@@ -92,53 +90,68 @@ const buildAccount = () => {
     .catch((err) => console.log(err));
 };
 
-// função de depositar 
+// função de depositar
 const deposit = () => {
-  inquirer.prompt([
-    {
-      name: 'accountName',
-      message: 'Qual o nome da conta que deseja realizar o deposito?',
-    },
-  ])
-  .then((answer) => {
-    const accountName = answer['accountName']
-
-    if (!checkAccount(accountName)) {
-      return deposit();
-    }
-
-    inquirer.prompt([
+  inquirer
+    .prompt([
       {
-        name: 'amount',
-        message: 'Quanto você deseja depositar?'
+        name: "accountName",
+        message: "Qual o nome da conta que deseja realizar o deposito?",
+      },
+    ])
+    .then((answer) => {
+      const accountName = answer["accountName"];
+
+      if (!checkAccount(accountName)) {
+        return deposit();
       }
-    ]).then((answer) => {
-      const amount = answer['amount']
-      
-      operation();
+
+      inquirer
+        .prompt([
+          {
+            name: "amount",
+            message: "Quanto você deseja depositar?",
+          },
+        ])
+        .then((answer) => {
+          const amount = answer["amount"];
+
+          addAmount(accountName, amount);
+          operation();
+        })
+        .catch((err) => console.error(err));
     })
-    .catch((err) => console.error(err))
-  })
-  .catch((err) => console.log(err));
-}
+    .catch((err) => console.log(err));
+};
 
 // função check se conta existe]
 const checkAccount = (accountName) => {
   if (!fs.existsSync(`accounts/${accountName}.json`)) {
-    console.log(chalk.bgRed.black('Essa conta não existe, escolha outro nome!'))
+    console.log(
+      chalk.bgRed.black("Essa conta não existe, escolha outro nome!")
+    );
     return false;
   }
   return true;
-}
+};
 
 // função adiciona valor a conta
 const addAmount = (accountName, amount) => {
+  const account = getAccount(accountName);
 
-}
+  if (!amount) {
+    console.log("Ocorreu um erro, tente novamente");
+    return deposit();
+  }
+  console.log(account);
+};
 
 const getAccount = (accountName) => {
-  const accountJSON =  fs.readFileSync(`accounts/${accountName}.json`, {encoding: 'utf8', flag: 'r'});
-  return JSON.parse(accountJSON)
-}
+  const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, {
+    encoding: "utf8",
+    flag: "r",
+  });
+  return JSON.parse(accountJSON);
+};
 
 operation();
