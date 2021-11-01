@@ -27,7 +27,7 @@ const operation = () => {
         createAccount();
       } else if (action === "Depositar") {
         deposit();
-      } else if (action === "Consultar Saldo") {
+      } else if (action === "Consultar saldo") {
         getAccountBalance();
       } else if (action === "Sacar") {
       } else if (action === "Sair") {
@@ -83,35 +83,13 @@ const buildAccount = () => {
         (err) => {
           console.log(err);
         }
-      );
-
-      console.log(chalk.green("Parabéns sua conta foi criada!"));
-      operation();
-    })
-    .catch((err) => console.log(err));
+        );
+        
+        console.log(chalk.green("Parabéns sua conta foi criada!"));
+        operation();
+      })
+      .catch((err) => console.log(err));
 };
-
-// saldo de conta
-const getAccountBalance = () => {
-  inquirer.prompt([
-    {
-      name: 'accountName',
-      message: 'Qual o nome da sua conta?'
-    }
-  ])
-  .then((answer) => {
-    const accountName = answer['accountName']
-
-    if(!checkAccount(accountName)) {
-      return getAccountBalance()
-    }
-
-    const accountData = getAccount(accountName);
-    console.log(chalk.bgBlue.white(`Olá, o saldo da conta ${accountName} é : R$${accountData.balance}`))
-    operation();
-  })
-  .catch((err) => console.log(err) )
-}
 
 // função de depositar
 const deposit = () => {
@@ -180,5 +158,27 @@ const getAccount = (accountName) => {
   });
   return JSON.parse(accountJSON);
 };
+
+// saldo de conta
+const getAccountBalance = () => {
+  inquirer.prompt([
+    {
+      name: 'accountName',
+      message: 'Qual o nome da sua conta?'
+    }
+  ])
+  .then((answer) => {
+    const accountName = answer['accountName']
+
+    if(!checkAccount(accountName)) {
+      return getAccountBalance()
+    }
+
+    const accountData = getAccount(accountName);
+    console.log(chalk.bgBlue.white(`Olá, o saldo da conta ${accountName} é : R$${accountData.balance}`))
+    operation();
+  })
+  .catch((err) => console.log(err) )
+}
 
 operation();
