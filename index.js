@@ -28,7 +28,7 @@ const operation = () => {
       } else if (action === "Consultar Saldo") {
 
       } else if (action === "Depositar") {
-
+        deposit();
       } else if (action === "Sacar") {
 
       } else if (action === "Sair") {
@@ -39,6 +39,7 @@ const operation = () => {
     .catch((err) => console.error(err));
 };
 
+// criação de conta
 const createAccount = () => {
   console.log(chalk.bgBlue.white("Obrigado por escolher nosso banco"));
   console.log(
@@ -49,6 +50,7 @@ const createAccount = () => {
   buildAccount();
 };
 
+// configuração de conta
 const buildAccount = () => {
   inquirer
     .prompt([
@@ -89,5 +91,32 @@ const buildAccount = () => {
     })
     .catch((err) => console.log(err));
 };
+
+// função de depositar 
+const deposit = () => {
+  inquirer.prompt([
+    {
+      name: 'accountName',
+      message: 'Qual o nome da conta que deseja realizar o deposito?',
+    },
+  ])
+  .then((answer) => {
+    const accountName = answer['accountName']
+
+    if (!checkAccount(accountName)) {
+      return deposit();
+    }
+  })
+  .catch((err) => console.log(err));
+}
+
+// função check se conta existe]
+const checkAccount = (accountName) => {
+  if (!fs.existsSync(`accounts/${accountName}.json`)) {
+    console.log(chalk.bgRed.black('Essa conta não existe, escolha outro nome!'))
+    return false;
+  }
+  return true;
+}
 
 operation();
